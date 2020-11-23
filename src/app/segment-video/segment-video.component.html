@@ -1,0 +1,54 @@
+<div class="card">
+  <form [formGroup]="segmentVideoForm" (ngSubmit)="segmentVideo()">
+    <div class="card-header">Segment Video</div>
+    <div class="card-body">
+
+      <div class="form-group">
+        <label for="video-link">
+          Video Link
+          <span style="color: red;">*</span>
+        </label>
+        <input type="text" id="video-link" class="form-control video-link" placeholder="Video Link" formControlName="video_link">
+      </div>
+
+      <div class="form-group">
+        <label for="segment-setting">Segment Settings</label>
+        <select id="segment-setting" class="custom-select segment-setting" formControlName="segment_settings">
+          <option value="" selected>Select Segment Settings ... </option>
+          <option value="Interval Duration">Interval Duration</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="interval-duration">
+          Interval Duration (in seconds) ...
+          <span style="color: red;">*</span>
+        </label>
+        <input type="number" id="interval-duration" class="form-control interval-duration" placeholder="Interval Duration" formControlName="interval_duration">
+      </div>
+
+
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary process-video" [disabled]="segmentVideoForm.invalid || loading">
+        SEGMENT VIDEO
+        <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></i>
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="card mt-3" *ngIf="segmentedVideos.interval_videos.length">
+  <div class="card-header">Segmented Videos ({{segmentedVideos.interval_videos.length}})</div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col mb-3" *ngFor="let video of segmentedVideos.interval_videos; let i = index;">
+        <h3>Segmented Video {{i+1}}</h3>
+        <video class="segmented-video-{{i+1}}" width="400" controls>
+          <source class="segmented-video-source-{{i+1}}" src="{{video.video_url}}" type="video/mp4">
+          Your browser does not support HTML video.
+        </video>
+      </div>
+    </div>
+  </div>
+</div>

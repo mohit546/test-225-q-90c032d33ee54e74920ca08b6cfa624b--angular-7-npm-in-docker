@@ -1,0 +1,56 @@
+<div class="card">
+  <form [formGroup]="videoCompilationForm" (ngSubmit)="videoCompilation()">
+    <div class="card-header">
+      Combine Video
+      <button type="button" class="btn btn-primary btn-sm add-video float-right" (click)="addVideo()">ADD VIDEO</button>
+    </div>
+    <div class="card-body">
+
+      <div formArrayName="segments">
+        <div class="form-group" *ngFor="let video of videoCompilationForm.get('segments')['controls']; let i = index" [formGroupName]="i">
+          <label for="combine-video-{{i+1}}">Video Link</label>
+          <div class="input-group">
+            <input type="text" id="combine-video-{{i+1}}" class="form-control combine-video-{{i+1}}"
+            placeholder="Video Link" style="width: 60%;" formControlName="video_url">
+            <input type="number" class="form-control combine-video-range-duration-start-{{i+1}}" placeholder="Start at" formControlName="start">
+            <input type="number" class="form-control combine-video-range-duration-end-{{i+1}}" placeholder="End at" formControlName="end">
+            <button type="button" class="btn btn-danger delete-combine-video-range-duration-{{i+1}} ml-2" (click)="deleteVideo(i)">DELETE</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="video-height">Video Height</label>
+            <input type="number" id="video-height" class="form-control video-height" placeholder="Video Height" formControlName="height">
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="form-group">
+            <label for="video-width">Video Width</label>
+            <input type="number" id="video-width" class="form-control video-width" placeholder="Video Width" formControlName="width">
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary combine-video" [disabled]="videoCompilationForm.invalid || loading">
+        COMBINE VIDEO(S)
+        <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="loading"></i>
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="card mt-3" *ngIf="compiledVideo.video_url">
+  <div class="card-header">Combined Video</div>
+  <div class="card-body">
+    <video class="combined-video" controls>
+      <source class="combined-video-source" src="{{compiledVideo.video_url}}" type="video/mp4">
+        Your browser does not support HTML video.
+    </video>
+  </div>
+</div>
